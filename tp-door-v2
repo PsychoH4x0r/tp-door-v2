@@ -1,0 +1,94 @@
+local screenGui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
+local startButton = Instance.new("TextButton")
+local stopButton = Instance.new("TextButton")
+local minimizeButton = Instance.new("TextButton")
+local textLabel = Instance.new("TextLabel")
+
+-- Menetapkan parent untuk elemen GUI
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+frame.Parent = screenGui
+textLabel.Parent = frame
+startButton.Parent = frame
+stopButton.Parent = frame
+minimizeButton.Parent = frame
+
+-- Mengatur properti Frame
+frame.BackgroundColor3 = Color3.fromRGB(36, 37, 42)  -- Warna latar belakang gelap
+frame.BorderSizePixel = 0  -- Menghapus border frame
+frame.Position = UDim2.new(0.5, -100, 0.25, -50)
+frame.Size = UDim2.new(0, 200, 0, 150)
+frame.Active = true
+frame.Draggable = true  -- Membuat frame dapat digeser
+
+-- Mengatur properti textLabel (CODEX EXPLOITER)
+textLabel.Text = "CODEX EXPLOITER By adit"
+textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Warna teks putih
+textLabel.Size = UDim2.new(1, 0, 0.2, 0)
+textLabel.Position = UDim2.new(0, 0, 0, 0)
+textLabel.Font = Enum.Font.SourceSans
+textLabel.TextSize = 20
+
+-- Mengatur properti StartButton
+startButton.Name = "StartButton"
+startButton.Text = "Start"
+startButton.Size = UDim2.new(0, 80, 0, 30)
+startButton.Position = UDim2.new(0.5, -90, 0.35, -15)
+startButton.BackgroundColor3 = Color3.fromRGB(114, 137, 218)  -- Warna biru
+startButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Warna teks putih
+
+-- Mengatur properti StopButton
+stopButton.Name = "StopButton"
+stopButton.Text = "Stop"
+stopButton.Size = UDim2.new(0, 80, 0, 30)
+stopButton.Position = UDim2.new(0.5, -90, 0.5, -15)
+stopButton.BackgroundColor3 = Color3.fromRGB(240, 71, 71)  -- Warna merah
+stopButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Warna teks putih
+
+-- Mengatur properti MinimizeButton
+minimizeButton.Name = "MinimizeButton"
+minimizeButton.Text = "_"
+minimizeButton.Size = UDim2.new(0, 20, 0, 20)
+minimizeButton.Position = UDim2.new(0.95, -25, 0, 5)
+minimizeButton.BackgroundTransparency = 1
+minimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)  -- Warna teks putih
+minimizeButton.FontSize = Enum.FontSize.Size18
+
+-- Fungsi untuk mengubah visibilitas frame saat tombol minimize ditekan
+minimizeButton.MouseButton1Click:Connect(function()
+    frame.Visible = not frame.Visible
+end)
+
+-- Variable untuk mengontrol status skrip
+local running = false
+
+-- Fungsi untuk menjalankan skrip Anda
+local function startScript()
+    if not running then
+        running = true
+        while running do
+            for _, part in pairs(workspace:GetDescendants()) do
+                if not running then break end
+                if part:IsA("BasePart") then
+                    -- Memeriksa apakah bagian sesuai dengan kriteria yang diinginkan (misalnya, pintu atau mobil)
+                    if string.find(part.Name:lower(), "door") or string.find(part.Name:lower(), "car") then
+                        pcall(function()
+                            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame
+                            wait(0,0,0,0,0,0,0,0,0,0,0,1)  -- Menambahkan jeda 0.1 detik antara teleportasi
+                        end)
+                    end
+                end
+            end
+            wait(0,0,0,0,0,0,0,0,0,0,0,1)  -- Jeda setelah satu siklus teleportasi selesai
+        end
+    end
+end
+
+-- Fungsi untuk menghentikan skrip Anda
+local function stopScript()
+    running = false
+end
+
+-- Menghubungkan fungsi ke tombol
+startButton.MouseButton1Click:Connect(startScript)
+stopButton.MouseButton1Click:Connect(stopScript)
